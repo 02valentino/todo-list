@@ -17,10 +17,11 @@ TodoEditDialog::TodoEditDialog(Todo& todo, QWidget *parent)
     descriptionEdit = new QTextEdit(this);
     descriptionEdit->setText(todo.getDescription());
 
-    QLabel *startEditLabel = new QLabel("Start date:", this);
-    startEdit = new QDateTimeEdit(todo.getStartDate(), this);
-    startEdit->setCalendarPopup(true);
-    startEdit->setDisplayFormat("dd/MM/yyyy hh:mm");
+    QLabel *dueDateEditLabel = new QLabel("Start date:", this);
+    dueDateEdit = new QDateTimeEdit(todo.getDueDate(), this);
+    dueDateEdit->setCalendarPopup(true);
+    dueDateEdit->setDisplayFormat("dd/MM/yyyy hh:mm");
+    dueDateEdit->setDateTime(QDateTime::currentDateTime());
 
     okButton = new QPushButton("OK");
     cancelButton = new QPushButton("Cancel");
@@ -40,10 +41,10 @@ TodoEditDialog::TodoEditDialog(Todo& todo, QWidget *parent)
     descriptionLayoutWidget->layout()->addWidget(descriptionLabel);
     descriptionLayoutWidget->layout()->addWidget(descriptionEdit);
 
-    auto startDateLayoutWidget = new QWidget(layoutWidget);
-    startDateLayoutWidget->setLayout(new QVBoxLayout(this));
-    startDateLayoutWidget->layout()->addWidget(startEditLabel);
-    startDateLayoutWidget->layout()->addWidget(startEdit);
+    auto dueDateLayoutWidget = new QWidget(layoutWidget);
+    dueDateLayoutWidget->setLayout(new QVBoxLayout(this));
+    dueDateLayoutWidget->layout()->addWidget(dueDateEditLabel);
+    dueDateLayoutWidget->layout()->addWidget(dueDateEdit);
 
     auto buttonsLayoutWidget = new QWidget(layoutWidget);
     buttonsLayoutWidget->setLayout(new QHBoxLayout(this));
@@ -51,7 +52,7 @@ TodoEditDialog::TodoEditDialog(Todo& todo, QWidget *parent)
     buttonsLayoutWidget->layout()->addWidget(cancelButton);
 
     mainLayout->addWidget(titleLayoutWidget);
-    mainLayout->addWidget(startDateLayoutWidget);
+    mainLayout->addWidget(dueDateLayoutWidget);
     mainLayout->addWidget(descriptionLayoutWidget);
     mainLayout->addWidget(buttonsLayoutWidget);
 
@@ -68,13 +69,13 @@ Todo& TodoEditDialog::getTodo() const {
 
 void TodoEditDialog::accept() {
     if (titleEdit->text().isEmpty()) {
-        QMessageBox::warning(this, "Error", "Title cant be empty!");
+        QMessageBox::warning(this, "Error", "Title can't be empty!");
         return;
     }
 
     todo.setTitle(titleEdit->text());
     todo.setDescription(descriptionEdit->toPlainText());
-    todo.setStartDate(startEdit->dateTime());
+    todo.setDueDate(dueDateEdit->dateTime());
 
     QDialog::accept();
 }

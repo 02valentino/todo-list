@@ -21,7 +21,7 @@ private:
     Todo& todo;
     QLineEdit *titleEdit;
     QTextEdit *descriptionEdit;
-    QDateTimeEdit *startEdit;
+    QDateTimeEdit *dueDateEdit;
     QPushButton *okButton;
     QPushButton *cancelButton;
 };
