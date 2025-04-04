@@ -2,6 +2,7 @@
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QStatusBar>
+#include <QMessageBox>
 #include "TodoListQAbstractTableModelAdapter.h"
 
 MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *parent) {
@@ -34,12 +35,14 @@ MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *pare
     connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
 
-    auto newMenu = menuBar()->addMenu("New");
+    auto newMenu = menuBar()->addMenu("Edit");
     auto addTodoAction = newMenu->addAction("Add Todo");
+    auto addRemoveAllAction = newMenu->addAction("Remove All");
 
     addTodoAction->setShortcut(QKeySequence::New);
 
     connect(addTodoAction, &QAction::triggered, this, &MainWindow::addTodo);
+    connect(addRemoveAllAction, &QAction::triggered, this, &MainWindow::removeAll);
 }
 
 void MainWindow::addTodo() {
@@ -82,7 +85,19 @@ void MainWindow::load() {
 }
 
 void MainWindow::update() {
-    statusBar()->showMessage(QString("Todos: %1").arg(todoList->size()), 1000);
+    statusBar()->showMessage(QString("Todos:%1").arg(todoList->size()) +
+                             QString("      Not done:%1").arg(todoList->notDoneCount()));
+}
+
+void MainWindow::removeAll() {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete all todos?",
+                                  QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        for (auto i = todoList->size() - 1; i >= 0; --i) {
+            todoList->removeTodo(i);
+        }
+    }
 }
 
 MainWindow::~MainWindow() {

@@ -22,6 +22,7 @@ public slots:
     void saveAs();
     void load();
     void addTodo();
+    void removeAll();
 
 private:
     Controller *controller;
