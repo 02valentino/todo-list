@@ -5,7 +5,6 @@
 #include <QList>
 #include <QDate>
 #include <QString>
-#include "Subject.h"
 #include "Serializable.h"
 
 class Todo : public Serializable {
@@ -14,10 +13,10 @@ public:
 
     Todo(const Todo &todo)
             : title(todo.title), description(todo.description), done(todo.done),
-              startDate(todo.startDate) {}
+              dueDate(todo.dueDate) {}
 
     Todo(const QString &title, const QString &desc, bool done, const QDateTime &startDate)
-            : title(title), description(desc), done(done), startDate(startDate) {}
+            : title(title), description(desc), done(done), dueDate(startDate) {}
 
     const QString &getTitle() const;
 
@@ -31,9 +30,9 @@ public:
 
     void setDone(bool done);
 
-    const QDateTime &getStartDate() const;
+    const QDateTime &getDueDate() const;
 
-    void setStartDate(const QDateTime &startDate);
+    void setDueDate(const QDateTime &startDate);
 
     QByteArray serialize() const override;
 
@@ -47,7 +46,7 @@ private:
     QString title;
     QString description;
     bool done = false;
-    QDateTime startDate;
+    QDateTime dueDate;
 };
 
 #endif //QT_TO_DO_LIST_TODO_H

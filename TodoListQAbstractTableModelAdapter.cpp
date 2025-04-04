@@ -24,7 +24,7 @@ QVariant TodoListQAbstractTableModelAdapter::data(const QModelIndex &index, int 
         case 0:
             return todo.getTitle();
         case 1:
-            return todo.getStartDate();
+            return todo.getDueDate();
         case 2:
             return todo.isDone() ? "Done" : "Not Done";
         default:

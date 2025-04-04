@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "Todo.h"
+#include "Subject.h"
 #include "Serializable.h"
 
 class TodoList : public Subject, public Serializable {

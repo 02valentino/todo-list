@@ -51,6 +51,6 @@ EXPECT_EQ(todo.getTitle(), title);
 TEST(TodoClassTest, todo_set_start_date) {
 Todo todo;
 QDateTime startDate = QDateTime::currentDateTime();
-todo.setStartDate(startDate);
-EXPECT_EQ(todo.getStartDate(), startDate);
+    todo.setDueDate(startDate);
+EXPECT_EQ(todo.getDueDate(), startDate);
 }

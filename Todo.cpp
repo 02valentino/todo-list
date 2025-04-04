@@ -28,7 +28,7 @@ void Todo::setDone(bool done) {
 
 bool Todo::operator==(const Todo &rhs) const {
     return title == rhs.title && description == rhs.description && done == rhs.done &&
-           startDate == rhs.startDate;
+           dueDate == rhs.dueDate;
 }
 
 bool Todo::operator!=(const Todo &rhs) const {
@@ -38,19 +38,19 @@ bool Todo::operator!=(const Todo &rhs) const {
 QByteArray Todo::serialize() const {
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
-    stream << title << description << done << startDate;
+    stream << title << description << done << dueDate;
     return data;
 }
 
 void Todo::deserialize(const QByteArray &data) {
     QDataStream stream(data);
-    stream >> title >> description >> done >> startDate;
+    stream >> title >> description >> done >> dueDate;
 }
 
-const QDateTime &Todo::getStartDate() const {
-    return startDate;
+const QDateTime &Todo::getDueDate() const {
+    return dueDate;
 }
 
-void Todo::setStartDate(const QDateTime &startDate) {
-    Todo::startDate = startDate;
+void Todo::setDueDate(const QDateTime &startDate) {
+    Todo::dueDate = startDate;
 }
