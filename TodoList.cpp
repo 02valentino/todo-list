@@ -83,3 +83,14 @@ void TodoList::setTodo(int i, const Todo &todo) {
     todos[i] = todo;
     notify();
 }
+
+QList<Todo> TodoList::filteredTodos(const QString &searchTerm) const {
+    QList<Todo> searchedTodo;
+    for (const auto &todo: todos) {
+        if (todo.getTitle().contains(searchTerm, Qt::CaseInsensitive) ||
+            todo.getDueDate().toString().contains(searchTerm, Qt::CaseInsensitive)) {
+            searchedTodo.append(todo);
+        }
+    }
+    return searchedTodo;
+}

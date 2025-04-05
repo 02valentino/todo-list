@@ -33,6 +33,8 @@ public:
 
     void notify() override;
 
+    QList<Todo> filteredTodos(const QString &searchTerm) const;
+
     QByteArray serialize() const override;
 
     void deserialize(const QByteArray& data) override;
