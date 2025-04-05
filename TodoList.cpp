@@ -88,7 +88,8 @@ QList<Todo> TodoList::filteredTodos(const QString &searchTerm) const {
     QList<Todo> searchedTodo;
     for (const auto &todo: todos) {
         if (todo.getTitle().contains(searchTerm, Qt::CaseInsensitive) ||
-            todo.getDueDate().toString().contains(searchTerm, Qt::CaseInsensitive)) {
+            todo.getDescription().contains(searchTerm, Qt::CaseInsensitive) ||
+            todo.getDueDate().date().toString("yyyy-MM-dd").contains(searchTerm, Qt::CaseInsensitive)) {
             searchedTodo.append(todo);
         }
     }
