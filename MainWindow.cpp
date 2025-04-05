@@ -100,6 +100,11 @@ void MainWindow::removeAll() {
     }
 }
 
+void MainWindow::searchTodos(const QString &searchTerm) {
+    auto filtered = todoList->filteredTodos(searchTerm);
+    tableView->update();
+}
+
 MainWindow::~MainWindow() {
     todoList->removeObserver(this);
 }

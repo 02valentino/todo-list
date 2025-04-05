@@ -23,6 +23,7 @@ public slots:
     void load();
     void addTodo();
     void removeAll();
+    void searchTodos(const QString &searchTerm);
 
 private:
     Controller *controller;
