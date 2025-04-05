@@ -149,7 +149,7 @@ void MainWindow::searchTodos(const QString &searchTerm) {
 bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-        if (!searchResults->geometry().contains(mouseEvent->globalPos())) {
+        if (!searchResults->geometry().contains(mouseEvent->globalPosition().toPoint())) {
             searchResults->hide();
         }
     }
