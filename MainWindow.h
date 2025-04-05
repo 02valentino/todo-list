@@ -5,6 +5,8 @@
 #include "Observer.h"
 #include <QMainWindow>
 #include <QTableView>
+#include <QLineEdit>
+#include <QListWidget>
 #include "TodoList.h"
 #include "TodoTableView.h"
 
@@ -29,6 +31,8 @@ private:
     Controller *controller;
     TodoTableView *tableView;
     QString currentPath;
+    QLineEdit *searchBar;
+    QListWidget *searchResults;
     TodoList *todoList;
 };
 

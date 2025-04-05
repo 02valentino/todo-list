@@ -3,6 +3,8 @@
 #include <QFileDialog>
 #include <QStatusBar>
 #include <QMessageBox>
+#include <QVBoxLayout>
+#include <QListWidgetItem>
 #include "TodoListQAbstractTableModelAdapter.h"
 
 MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *parent) {
@@ -13,8 +15,32 @@ MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *pare
     setStatusBar(new QStatusBar(this));
     statusBar()->showMessage("Try creating a new todo (see global menu)");
 
+    searchBar = new QLineEdit(this);
+    searchBar->setPlaceholderText("Search todos...");
+    connect(searchBar, &QLineEdit::returnPressed, this, [this](){
+        searchTodos(searchBar->text());
+    });
+
+    searchResults = new QListWidget(this);
+    searchResults->setWindowFlags(Qt::Popup);
+    searchResults->setFocusPolicy(Qt::NoFocus);
+    searchResults->hide();
+
+    connect(searchResults, &QListWidget::itemClicked, this, [this, controller](QListWidgetItem *item){
+        int row = item->data(Qt::UserRole).toInt();
+        controller->showEditDialog(row);
+        searchResults->hide();
+    });
+
     tableView = new TodoTableView(this, todolist, controller);
-    setCentralWidget(tableView);
+
+    auto layout = new QVBoxLayout;
+    layout->addWidget(searchBar);
+    layout->addWidget(tableView);
+
+    auto centralWidget = new QWidget(this);
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
 
     setGeometry(100, 100, 800, 600);
 
@@ -102,7 +128,18 @@ void MainWindow::removeAll() {
 
 void MainWindow::searchTodos(const QString &searchTerm) {
     auto filtered = todoList->filteredTodos(searchTerm);
-    tableView->update();
+    searchResults->clear();
+    for (int i = 0; i < filtered.size(); ++i) {
+        QListWidgetItem *item = new QListWidgetItem(filtered[i].getTitle(), searchResults);
+        item->setData(Qt::UserRole, i);
+    }
+    if (!filtered.isEmpty()) {
+        QPoint pos = searchBar->mapToGlobal(QPoint(0, searchBar->height()));
+        searchResults->setGeometry(pos.x(), pos.y(), searchBar->width(), 200);
+        searchResults->show();
+    } else {
+        searchResults->hide();
+    }
 }
 
 MainWindow::~MainWindow() {
