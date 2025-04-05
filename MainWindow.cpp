@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QListWidgetItem>
+#include <QEvent>
+#include <QMouseEvent>
 #include "TodoListQAbstractTableModelAdapter.h"
 
 MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *parent) {
@@ -69,6 +71,8 @@ MainWindow::MainWindow(TodoList *todolist, Controller *controller, QWidget *pare
 
     connect(addTodoAction, &QAction::triggered, this, &MainWindow::addTodo);
     connect(addRemoveAllAction, &QAction::triggered, this, &MainWindow::removeAll);
+
+    qApp->installEventFilter(this);
 }
 
 void MainWindow::addTodo() {
@@ -140,6 +144,16 @@ void MainWindow::searchTodos(const QString &searchTerm) {
     } else {
         searchResults->hide();
     }
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (!searchResults->geometry().contains(mouseEvent->globalPos())) {
+            searchResults->hide();
+        }
+    }
+    return QMainWindow::eventFilter(obj, event);
 }
 
 MainWindow::~MainWindow() {

@@ -27,6 +27,9 @@ public slots:
     void removeAll();
     void searchTodos(const QString &searchTerm);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 private:
     Controller *controller;
     TodoTableView *tableView;
