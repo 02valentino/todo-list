@@ -157,3 +157,30 @@ todoList.addTodo(todo2);
 
 EXPECT_EQ(todoList.doneCount(), 1);
 }
+
+TEST(TodoListTests, filteredTodos){
+TodoList todoList;
+auto todo1 = Todo("Title1", "Description1", false, QDateTime(QDate(2025, 4, 15), QTime()));
+auto todo2 = Todo("Title2", "Description2", true, QDateTime(QDate(2025, 5, 1), QTime()));
+auto todo3 = Todo("Another Title", "Another Description", false, QDateTime(QDate(2025, 6, 22), QTime()));
+
+todoList.addTodo(todo1);
+todoList.addTodo(todo2);
+todoList.addTodo(todo3);
+
+auto filtered = todoList.filteredTodos("Title");
+ASSERT_EQ(filtered.size(), 3);
+EXPECT_EQ(filtered[0].getTitle(), "Title1");
+EXPECT_EQ(filtered[1].getTitle(), "Title2");
+
+filtered = todoList.filteredTodos("Another");
+ASSERT_EQ(filtered.size(), 1);
+EXPECT_EQ(filtered[0].getTitle(), "Another Title");
+
+filtered = todoList.filteredTodos("2025-05-01");
+ASSERT_EQ(filtered.size(), 1);
+EXPECT_EQ(filtered[0].getTitle(), "Title2");
+
+filtered = todoList.filteredTodos("Nonexistent");
+ASSERT_TRUE(filtered.isEmpty());
+}
